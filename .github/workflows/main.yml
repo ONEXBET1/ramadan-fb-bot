@@ -1,0 +1,29 @@
+name: Facebook Auto Poster
+
+on:
+  schedule:
+    # هذا الكود يعني: "كل 3 ساعات"
+    - cron: '0 */3 * * *'
+  workflow_dispatch: # يسمح لك بتشغيل البوت يدوياً للتجربة
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Libraries
+        run: pip install -r requirements.txt
+
+      - name: Run Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          FB_TOKEN: ${{ secrets.FB_TOKEN }}
+        run: python bot.py
+        
