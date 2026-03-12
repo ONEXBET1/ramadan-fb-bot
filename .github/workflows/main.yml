@@ -2,27 +2,24 @@ name: Facebook Auto Poster
 
 on:
   schedule:
-    - cron: '0 */3 * * *'
-  workflow_dispatch:
+    # النشر في المواعيد: 9ص، 11ص، 2بظ، 5م، 9م
+    - cron: '0 9,11,14,17,21 * * *'
+  workflow_dispatch: # هذا السطر يسمح لك بالنشر يدوياً في أي وقت للتجربة
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4 # تم التحديث من v3 إلى v4
-
+        uses: actions/checkout@v4
       - name: Setup Python
-        uses: actions/setup-python@v5 # تم التحديث من v4 إلى v5
+        uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-
       - name: Install Libraries
         run: pip install -r requirements.txt
-
       - name: Run Script
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           FB_TOKEN: ${{ secrets.FB_TOKEN }}
         run: python bot.py
-        
